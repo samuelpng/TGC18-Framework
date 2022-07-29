@@ -15,25 +15,16 @@ exports.setup = function(options, seedLink) {
 };
 
 exports.up = function(db) {
-  return db.addColumn('products', 'brand_id',{
-    type:'int',
-    unsigned: true,
-    notNull: true,
-    defaultValue: 1, //for all rows that have no brand_id, default value is 1
-    foreignKey: {
-      'name': 'product_brand_fk',
-      'table': 'brands',
-      'mapping': 'id',
-      'rules': {
-        'onDelete': 'cascade',
-        'onUpdate': 'restrict'
-      }
-    }
-  });
+  return db.createTable('users', {
+    id: {type: 'int', autoIncrement: true, primaryKey:true, unsigned: true},
+    username: {type:'string', length: 100},
+    email: {type:'string'},
+    password:  {type:'string', length: 30}
+  })
 };
 
 exports.down = function(db) {
-  return null;
+  return db.dropTable('users');
 };
 
 exports._meta = {

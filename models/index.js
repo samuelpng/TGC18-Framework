@@ -16,5 +16,8 @@ const Category = bookshelf.model('Category', {
     category: function(){return this.hasMany('Product')}
 })
 
+const User = bookshelf.model('User',{
+    tableName: 'users'
+})
 
-module.exports = { Product, Category };
+module.exports = { Product, Category, User };

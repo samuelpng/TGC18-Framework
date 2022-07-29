@@ -10,6 +10,9 @@ const flash = require('connect-flash')
 //create a new session file store
 const Filestore = require('session-file-store')(session)
 
+const csrf = require('csurf')
+app.use(urlencoded())
+
 // create an instance of express app
 const app = express();
 
@@ -29,9 +32,14 @@ const landingRoutes = require('./routes/landing')
 
 const productRoutes = require('./routes/products')
 
+const userRoutes = require('./routes/users');
+const { urlencoded } = require("express");
+
 app.use('/', landingRoutes)
 
 app.use('/products', productRoutes)
+
+app.use('/users', userRoutes)
 
 //set-up sessions
 app.use(session({
@@ -48,6 +56,13 @@ app.use(function(req,res,next){
   //res.locals will contain all variables available to hbs files
   res.locals.success_messages = req.flash('success_messages')
   res.locals.error_messages = req.flash('error_messages')
+})
+
+app.use(csrf())
+
+app.use(function(req,res,next){
+  res.locals.csrfToken = req.csrfToken();
+  next();
 })
 
 // enable forms
